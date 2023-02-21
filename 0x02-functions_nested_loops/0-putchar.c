@@ -1,17 +1,19 @@
-#include <stdio.h>
+#include "main.h"
 /**
- * main - prints the word _putchar
- * Return: return 0
+ * main - print _putchar
+ * is written Jerry Seazia
+ * Return: 0
  */
 int main(void)
 {
-char word[9] = "_putchar";
-int i = 0;
-while (i < 8)
-{
-putchar(word[i]);
-i++;
-}
-putchar('\n');
-return (0);
+_putchar('-');
+_putchar('p');
+_putchar('u');
+_putchar('t');
+_putchar('c');
+_putchar('h');
+_putchar('a');
+_putchar('r');
+_putchar('\n');
+return (o);
 }
