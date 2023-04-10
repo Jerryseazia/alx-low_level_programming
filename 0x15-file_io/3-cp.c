@@ -53,13 +53,13 @@ void close_file(int fd)
  *
  * Description: If the argument count is wrong -- 98.
  *              If file not exit - exit code 98.
- *              If file_to cannot be created - - 99.
+ *              If file_to cannot be created - 99.
  *              If file_to or file_from cannot be closed - exit code 100.
  */
 int main(int argc, char *argv[])
 {
-	int from, fo, ro, w;
-	char *buf;
+	int from, to, r, w;
+	char *buffer;
 
 	if (argc != 3)
 	{
@@ -67,22 +67,22 @@ int main(int argc, char *argv[])
 		exit(97);
 	}
 
-	buf = create_buffer(argv[2]);
+	buffer = create_buffer(argv[2]);
 	from = open(argv[1], O_RDONLY);
-	ro = read(from, buf, 1024);
+	r = read(from, buffer, 1024);
 	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
 	do {
-		if (from == -1 || ro == -1)
+		if (from == -1 || r == -1)
 		{
 			dprintf(STDERR_FILENO,
 				"Error: Can't read from file %s\n", argv[1]);
-			free(buf);
+			free(buffer);
 			exit(98);
 		}
 
-		w = write(fo, buf, ro);
-		if (fo == -1 || w == -1)
+		w = write(to, buffer, r);
+		if (to == -1 || w == -1)
 		{
 			dprintf(STDERR_FILENO,
 				"Error: Can't write to %s\n", argv[2]);
@@ -90,14 +90,14 @@ int main(int argc, char *argv[])
 			exit(99);
 		}
 
-		ro = read(from, buf, 1024);
-		fo = open(argv[2], O_WRONLY | O_APPEND);
+		r = read(from, buffer, 1024);
+		to = open(argv[2], O_WRONLY | O_APPEND);
 
-	} while (ro > 0);
+	} while (r > 0);
 
-	free(buf);
+	free(buffer);
 	close_file(from);
-	close_file(fo);
+	close_file(to);
 
 	return (0);
 }
